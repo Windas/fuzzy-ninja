@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: { registrations: 'users/registrations' }
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay 5out with "rake routes".
@@ -56,8 +56,19 @@ Rails.application.routes.draw do
   #     resources :products
   #   end
 
+  resources :friendships
+
+  get 'friendship/my_friends' => 'friendships#my_friends', as: :my_friends
+
+  get 'friendship/my_friends/:id' => 'friendships#grant_request', as: :grant_request
+
   scope module: 'mission' do
     resources :missions
+
+    get 'mission/mission_board' => 'missions#mission_board', as: :mission_board
+
     get 'mission/my_missions' => 'missions#my_missions', as: :my_missions
   end
+
+  resources :supervisions
 end
